@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="text-gray-700 body-font overflow-hidden">
+    <div class="container px-5 py-24 mx-auto">
+        <div class="lg:w-4/5 mx-auto flex flex-wrap">
+            <div class="w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+                <div class="w-full flex items-center justify-between space-x-6">
+                    <div class="flex-1 truncate">
+                        <a class="hover:text-blue-500" href="{% url 'tickets:ticket-list' %}">Go back to tickets</a>
+                        <hr>  
+                        <br>
+                        <div class="flex items-center space-x-3">
+                            <h3 class="text-3xl text-gray-900 font-medium truncate">{{ ticket.title }}</h3>                       
+                        </div>                        
+                        <p class="mt-1 text-xl text-gray-500 truncate">{{ ticket.description }}</p>
+                    </div>                
+                </div>
+
+                <div class="flex mb-4">
+                    <a href="{{ticket.get_absolute_url}}" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
+                        Overview
+                    </a>
+                    <a href="{% url 'tickets:ticket-category-update' ticket.pk %}" class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">
+                        Category
+                    </a>
+                    {% if request.user.is_organizer %}
+                    <a href="{% url 'tickets:ticket-update' ticket.pk %}" class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">
+                        Update Details
+                    </a>   
+                    {% endif %} 
+                </div>
+                <!-- ID -->
+                <div class="flex border-t border-gray-300 py-2">
+                    <span class="text-gray-500">ID</span>                      
+                    <span class="ml-auto text-gray-900">{{ ticket.id }}</span>
+                </div>
+                <!-- Title -->
+                <div class="flex border-t border-gray-300 py-2">
+                    <span class="text-gray-500">Title</span>                    
+                    <span class="ml-auto text-gray-900">{{ ticket.title }}</span>
+                </div>
+                <!-- Type -->
+                <div class="flex border-t border-b mb-6 border-gray-300 py-2">
+                    <span class="text-gray-500">Type</span>             
+                    <span class="ml-auto text-gray-900">{{ ticket.get_type_display }}</span>
+                </div>
+                <!-- Uploaded File -->
+                <div class="flex border-t border-b mb-6 border-gray-300 py-2">
+                    <span class="text-gray-500">Uploaded File</span>             
+                    {% if ticket.uploaded_file %}
+                    <div class="ml-auto text-gray-900">
+                        <a href="{{ ticket.uploaded_file.url }}" download class="font-medium text-indigo-600 hover:text-indigo-500">
+                        Download
+                        </a>
+                    </div>
+                    {% else %} 
+                    <span class="ml-auto text-gray-900">Not Provided</span>
+                    {% endif %} 
+                </div>
+                <!-- Uploaded Image -->
+                <div class="flex border-t border-b mb-6 border-gray-300 py-2">
+                    <span class="text-gray-500">Uploaded Image</span>
+                    {% if ticket.uploaded_image %}
+                    <div class="ml-auto text-gray-900">
+                        <a href="{{ ticket.uploaded_image.url }}" download class="font-medium text-indigo-600 hover:text-indigo-500">
+                        Download
+                        </a>
+                    </div>
+                    {% else %} 
+                    <span class="ml-auto text-gray-900">Not Provided</span>
+                    {% endif %} 
+                </div>
+                <!-- Created Date -->
+                <div class="flex border-t border-b mb-6 border-gray-300 py-2">
+                    <span class="text-gray-500">Created date</span>             
+                    <span class="ml-auto text-gray-900">{{ ticket.created_date }}</span>
+                </div>
+                <!-- Completed Date -->
+                <div class="flex border-t border-b mb-6 border-gray-300 py-2">
+                    <span class="text-gray-500">Completed date</span>             
+                    <span class="ml-auto text-gray-900">{{ ticket.completed_date }}</span>
+                </div>
+                <!-- Department -->
+                <div class="flex border-t border-b mb-6 border-gray-300 py-2">
+                    <span class="text-gray-500">Department</span>             
+                    <span class="ml-auto text-gray-900">{{ ticket.department }}</span>
+                </div>
+                <!-- Associate -->
+                <div class="flex border-t border-b mb-6 border-gray-300 py-2">
+                    <span class="text-gray-500">Associate</span>             
+                    <span class="ml-auto text-gray-900">{{ ticket.associate}}</span>
+                </div>
+                <!-- Category -->
+                <div class="flex border-t border-b mb-6 border-gray-300 py-2">
+                    <span class="text-gray-500">Category</span>             
+                    <span class="ml-auto text-gray-900">{{ ticket.category }}</span>                   
+                </div>               
+            </div>
+
+        <a href="{% url 'tickets:ticket-followup-create' ticket.pk %}" class="text-white bg-blue-500 hover:bg-blue-600 px-3 py-2 rounded-md">Add a followup</a>
+
+        </div>
+
+        {% for followup in ticket.followups.all %}
+            <div class="mt-5 shadow px-4 sm:px-6">
+                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
+                    <dt class="text-sm font-medium text-gray-500">
+                    Notes (<a href="{% url 'tickets:ticket-followup-update' followup.pk %}" class="text-blue-500 hover:text-blue-700">update</a>)
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {{ followup.notes }}
+                    </dd>
+                </div>
+                {% if followup.file %}
+                    <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
+                        <dt class="text-sm font-medium text-gray-500">
+                        Attachments
+                        </dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <ul class="border border-gray-200 rounded-md divide-y divide-gray-200">
+                            <li class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                                <div class="w-0 flex-1 flex items-center">
+                                    <!-- Heroicon name: paper-clip -->
+                                    <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="ml-2 flex-1 w-0 truncate">
+                                    {{ followup.file.name }}
+                                    </span>
+                                </div>
+                                <div class="ml-4 flex-shrink-0">
+                                    <a href="{{ followup.file.url }}" download class="font-medium text-indigo-600 hover:text-indigo-500">
+                                    Download
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                        </dd>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}        
+
+    </div>
+  </section>
+{% endblock content %}

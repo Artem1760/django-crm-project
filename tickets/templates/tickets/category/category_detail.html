@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="text-gray-700 body-font">
+    <div class="container px-5 py-24 mx-auto">
+      <div class="flex flex-col text-center w-full mb-20">
+        <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">
+            {{ category.name|title }}
+        </h1>
+        <p class="lg:w-2/3 mx-auto leading-relaxed text-base">
+            These are the tickets under this category
+        </p>
+        <a class="hover:text-blue-500" href="{% url 'tickets:category-list' %}">Go back to categories</a>        
+      </div>      
+      <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+        <table class="table-auto w-full text-left whitespace-no-wrap">
+          <thead>
+            <tr>
+              <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-200 rounded-tl rounded-bl">
+                ID
+              </th>
+              <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-200 rounded-tl rounded-bl">
+                Title
+              </th>
+              <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-200 rounded-tl rounded-bl">
+                Type
+              </th>             
+              <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-200 rounded-tl rounded-bl">
+                Created Date
+              </th>             
+            </tr>
+          </thead>
+          <tbody>
+            {% for ticket in tickets %}
+              <tr>
+                <td class="px-4 py-3">{{ ticket.id }}</td>
+                <td class="px-4 py-3">
+                  <a class="hover:text-blue-500" href="{{ ticket.get_absolute_url }}">{{ ticket.title }}</a>
+                </td>
+                <td class="px-4 py-3">{{ ticket.get_type_display }}</td>                  
+                <td class="px-4 py-3">{{ ticket.created_date }}</td>                  
+              </tr>
+            {% empty %}  
+            <p>There are no tickets for this category yet.</p>
+            <br>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}
