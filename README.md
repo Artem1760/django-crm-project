@@ -48,8 +48,7 @@ Follow these steps to set up and run the project:
 6. Activate the provided PostgreSQL database:
     - Use password for db from .env file:    
     ```bash
-    pg_restore --dbname=crm --username=djcrmuser 
-    --password=3edcvfr4 ./crm_db.sql
+    pg_restore --dbname=crm --username=djcrmuser --password=your_password ./crm_db.sql
     ```  
 7. Set environment variables in the `.env` file (see below)
 8. Apply migrations: `python manage.py migrate`
