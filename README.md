@@ -27,7 +27,7 @@ The project consists of the following apps:
 - **Landing:** Serves as the home and dashboard of the CRM system.
 - **Theme:** Integrates Tailwind CSS for a simple but responsive design.
 
-### Setup
+## Setup
 Follow these steps to set up and run the project:
 1. Clone the repository: `git clone https://github.com/Artem1760/django-crm-project.git`
 2. Navigate to the project directory: `cd <project-directory>`
@@ -45,23 +45,29 @@ Follow these steps to set up and run the project:
         source venv/bin/activate
         ```
 5. Install dependencies: `pip install -r requirements.txt`
-6. Set environment variables in the `.env` file (see below).
-7. Apply migrations: `python manage.py migrate`
-8. Run the development server: `python manage.py runserver`
-9. Create a superuser to access the admin panel: `python manage.py createsuperuser`
+6. Activate the provided PostgreSQL database:
+    - Use password for db from .env file:    
+    ```bash
+    pg_restore --dbname=crm --username=djcrmuser 
+    --password=3edcvfr4 ./crm_db.sql
+    ```  
+7. Set environment variables in the `.env` file (see below)
+8. Apply migrations: `python manage.py migrate`
+9. Run the development server: `python manage.py runserver`
+10. Create a superuser to access the admin panel: `python manage.py createsuperuser`
 
 ### Environment Variables (.env)
 Replace environment variables in the `.env` file in the project root with your preferred values.
 
-### Usage
+## Usage
 1. Access the CRM system at [http://localhost:8000/](http://localhost:8000/).
 2. Log in as an organizer or associate.
 3. Explore the dashboard, create tickets, manage associates, and track ticket statuses.
 
-### Contributions
+## Contributions
 Feel free to contribute to the project by submitting issues or pull requests. Your feedback and improvements are highly appreciated.
 
-### License
+## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 **Happy CRM managing!**
